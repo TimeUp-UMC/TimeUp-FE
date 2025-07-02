@@ -1,4 +1,6 @@
 {
+  "jsx": "react-native", // ✅ 꼭 있어야 함!
+  "types": ["nativewind/types"], // ✅ NativeWind 사용할 경우
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
