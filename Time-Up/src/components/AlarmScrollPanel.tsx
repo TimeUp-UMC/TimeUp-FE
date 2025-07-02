@@ -1,0 +1,1 @@
+// scr/components/AlarmScrollPanel.tsx

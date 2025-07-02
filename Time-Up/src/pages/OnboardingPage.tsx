@@ -1,3 +1,4 @@
+// src/pages/OnboardingPage.tsx
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
@@ -11,6 +12,10 @@ export default function OnboardingPage() {
       <TouchableOpacity className="mt-4 bg-blue-500 px-4 py-2 rounded"
         onPress={() => navigation.navigate('LoginPage')}>
         <Text className="text-white">로그인</Text>
+      </TouchableOpacity>
+      <TouchableOpacity className="mt-4 bg-blue-500 px-4 py-2 rounded"
+        onPress={() => navigation.navigate('AlarmPage')}>
+        <Text className="text-white">임의 알람페이지 이동 버튼</Text>
       </TouchableOpacity>
     </View>
   );
