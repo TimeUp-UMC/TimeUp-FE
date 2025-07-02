@@ -1,59 +1,39 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, Easing, TouchableOpacity } from 'react-native';
+import React from "react";
 
 interface ToggleSwitchProps {
   isOn: boolean;
-  onToggle: () => void;
+  onToggle?: (isOn: boolean) => void;
+  disabled?: boolean;
 }
 
-export default function ToggleSwitch({ isOn, onToggle }: ToggleSwitchProps) {
-  const animatedValue = useRef(new Animated.Value(isOn ? 1 : 0)).current;
+export default function ToggleSwitch({ isOn, onToggle, disabled = false }: ToggleSwitchProps) {
+  const handleClick = () => {
+    if (!disabled) {
+      onToggle?.(!isOn);
+    }
+  };
 
-  useEffect(() => {
-    Animated.timing(animatedValue, {
-      toValue: isOn ? 1 : 0,
-      duration: 200,
-      easing: Easing.linear,
-      useNativeDriver: false,
-    }).start();
-  }, [isOn]);
+  const backgroundClass = () => {
+    if (disabled) return "bg-gray-400";
+    if (isOn) return "bg-blue"; 
+    return "bg-[#D9D9D9]";
+  };
+  
 
-  // 배경색 애니메이션
-  const backgroundColor = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['#D1D5DB', '#4D4DFF'], // gray-300 → indigo-500
-  });
-
-  const translateX = animatedValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [2, 15],
-  });
+  const cursorClass = disabled ? "cursor-not-allowed" : "cursor-pointer";
+  const animationClass = disabled ? "" : isOn ? "animate-toggleOn" : "animate-toggleOff";
 
   return (
-    <TouchableOpacity
-      onPress={onToggle}
-      activeOpacity={0.8}
+    <div
+      onClick={handleClick}
+      className={`w-[40px] h-[20px] rounded-[10px] relative transition-colors duration-300 ${backgroundClass()} ${cursorClass}`}
     >
-      <Animated.View
-        style={{
-          width: 36,
-          height: 20,
-          borderRadius: 10,
-          padding: 2,
-          backgroundColor, // animated 색상!
-          justifyContent: 'center',
-        }}
-      >
-        <Animated.View
-          style={{
-            width: 16,
-            height: 16,
-            borderRadius: 8,
-            backgroundColor: 'white',
-            transform: [{ translateX }],
-          }}
-        />
-      </Animated.View>
-    </TouchableOpacity>
+    <div
+    className={`w-[16px] h-[16px] bg-white rounded-full shadow-md absolute top-1/2 -translate-y-1/2 transition-all
+      ${isOn ? "left-[22px]" : "left-[2px]"}`}
+     />
+    </div>
   );
 }
+
+
