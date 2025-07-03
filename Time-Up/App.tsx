@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import LoginPage from './src/pages/LoginPage';
 import MyPage from './src/pages/MyPage';
-import OnboardingPage from './src/pages/OnBoardingPage';
+import OnboardingPage from './src/pages/OnboardingPage';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
