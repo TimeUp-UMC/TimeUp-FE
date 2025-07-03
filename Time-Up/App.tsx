@@ -8,6 +8,8 @@ import DiaryWritePage from './src/pages/DiaryWritePage';
 import LoginPage from './src/pages/LoginPage';
 import MyPage from './src/pages/MyPage';
 import OnboardingPage from './src/pages/OnboardingPage';
+import TestHalfTimeScrollPage from './src/pages/TestHalfTimeScrollPage';
+import TestTimeScrollPage from './src/pages/TestTimeScrollPage';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -20,6 +22,8 @@ export default function App() {
         <Stack.Screen name="AlarmPage" component={AlarmPage}/>
         <Stack.Screen name="CalendarPage" component={CalendarPage}/>
         <Stack.Screen name="DiaryWritePage" component={DiaryWritePage}/>
+        <Stack.Screen name="TestTimeScrollPage" component={TestTimeScrollPage}/>
+        <Stack.Screen name="TestHalfTimeScrollPage" component={TestHalfTimeScrollPage}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
