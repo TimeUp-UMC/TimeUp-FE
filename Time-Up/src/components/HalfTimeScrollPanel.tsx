@@ -9,7 +9,7 @@ const generateRange = (start: number, end: number) =>
 
 const hours = generateRange(1, 12);
 const minutes = generateRange(0, 59);
-const periods = [' ', ' ', '오전', '오후', ' ', ' '];
+const periods = [' ', ' ', '오전', '오후', ' ', ' '];   // ScrollView에서 위아래 여백 80을 맞추기 위해 공백 추가. 공백을 선택할 수 없도록 설정 필요. 혹은 스크롤뷰를 따로 설정 할 것.
 
 export default function HalfTimeScrollPanel() {
   const [selectedHour, setSelectedHour] = useState('00');
