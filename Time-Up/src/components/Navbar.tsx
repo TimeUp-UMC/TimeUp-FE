@@ -30,9 +30,9 @@ export default function Navbar() {
               <Ionicons
                 name={tab.icon as any}
                 size={24}
-                color={isActive ? 'tomato' : 'gray'}
+                color={isActive ? '#7c3aed' : 'gray'}
               />
-              <Text className={`text-xs ${isActive ? 'text-tomato-500 font-semibold' : 'text-gray-500'}`}>
+              <Text className={`text-xs ${isActive ? 'text-purple-600 font-semibold' : 'text-gray-500'}`}>
                 {tab.label}
               </Text>
             </TouchableOpacity>
