@@ -1,4 +1,4 @@
-// scr/components/Navbar.tsx
+// src/components/Navbar.tsx
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
