@@ -17,11 +17,9 @@ export default function App() {
   return (
     <PaperProvider>
      <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="CalendarPage"
-        screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="CalendarPage" component={CalendarPage}/>
+      <Stack.Navigator initialRouteName="OnboardingPage" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="OnboardingPage" component={OnboardingPage}/>
+        <Stack.Screen name="CalendarPage" component={CalendarPage}/>
         <Stack.Screen name="LoginPage" component={LoginPage}/>
         <Stack.Screen name="MyPage" component={MyPage}/>
         <Stack.Screen name="AlarmPage" component={AlarmPage}/>
