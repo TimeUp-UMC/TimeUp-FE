@@ -56,7 +56,7 @@ export default function App() {
       <BottomSheetModalProvider>
 
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="OnboardingPage" screenOptions={{ headerShown: false }}>
+          <Stack.Navigator initialRouteName="WakeUpAlarmPage" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="OnboardingPage" component={OnboardingPage} />
             <Stack.Screen name="CalendarPage" component={CalendarPage} />
             <Stack.Screen name="MyPage" component={MyPage} />
