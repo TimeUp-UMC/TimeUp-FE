@@ -1,11 +1,10 @@
 import useAppNavigation from '@/src/hooks/useAppNavigation';
 import { useProfileStore } from '@/src/stores/useProfileStore';
 import { setAccessToken, setRefreshToken } from '@/src/utils/storage';
-import { axiosInstance } from '@/src/apis/axiosInstance'; 
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
 import React, { useEffect, useRef } from 'react';
-import { Alert, Animated, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, Platform, Text, TouchableOpacity, View } from 'react-native';
 import GoogleIcon from '../../../assets/images/GoogleIcon.svg';
 import IconImage from '../../../assets/images/Icon.svg';
 import { login } from '../../apis/auth';
@@ -25,6 +24,40 @@ export default function OnboardingPage() {
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    console.log('Platform:', Platform.OS);
+    console.log('Android Client ID:', process.env.EXPO_PUBLIC_ANDROID_CLIENT_ID);
+    console.log('iOS Client ID:', process.env.GOOGLE_CLIENT_ID);
+    console.log('Request object:', request);
+    
+    import('expo-constants').then(Constants => {
+      console.log('App config:', Constants.default.expoConfig);
+      console.log('Android package:', Constants.default.expoConfig?.android?.package);
+      console.log('iOS bundleIdentifier:', Constants.default.expoConfig?.ios?.bundleIdentifier);
+    });
+    
+    console.log('Google Auth Response changed:', response);
+
+    if (response) {
+      if (response.type === 'success') {
+        const { authentication } = response;
+        console.log('Authentication object:', authentication);
+        if (authentication?.accessToken) {
+          console.log('Access Token:', authentication.accessToken);
+        } else {
+          console.warn('No access token found in authentication');
+        }
+      } else if (response.type === 'error') {
+        console.error('Google Auth Error:', response.error);
+        Alert.alert('인증 오류', `Google 로그인 중 오류가 발생했습니다: ${response.error?.message || '알 수 없는 오류'}`);
+      } else if (response.type === 'dismiss') {
+        console.log('Google Auth dismissed');
+      } else if (response.type === 'cancel') {
+        console.log('Google Auth cancelled by user');
+      }
+    }
+  }, [response]);
+
+  useEffect(() => {
     const fetchLogin = async () => {
       if (response?.type === 'success') {
         const { authentication } = response;
@@ -35,16 +68,7 @@ export default function OnboardingPage() {
         }
 
         try {
-          // const userInfoRes = await axiosInstance.get('https://www.googleapis.com/userinfo/v2/me', {
-          //   headers: {
-          //     Authorization: `Bearer ${authentication.accessToken}`,
-          //   },
-          // });
-          // const userInfo = userInfoRes.data;
-          // if (userInfo?.picture) {
-          //   setField('profileImage', userInfo.picture);
-          // }
-
+          console.log('Sending access token to backend...');
           const data = await login(authentication.accessToken);
 
           if (data.success?.accessToken) {
@@ -79,10 +103,19 @@ export default function OnboardingPage() {
   return (
     <View className="flex-1 items-center pt-[208px] bg-black gap-3">
       <IconImage/>
-      <Animated.View style={{ opacity: opacityAnim,position: 'absolute', bottom: 50 }}>
+      <Animated.View style={{ opacity: opacityAnim, position: 'absolute', bottom: 50 }}>
       <TouchableOpacity
-        disabled={!request}
-        onPress={() => promptAsync()}
+          disabled={!request}
+          onPress={async () => {
+            try {
+              console.log('Starting Google authentication...');
+              const result = await promptAsync();
+              console.log('Google login promptAsync result:', result);
+            } catch (error) {
+              console.error('Google login error:', error);
+              Alert.alert('오류', '구글 로그인 중 오류가 발생했습니다.');
+            }
+          }}
         className="bg-[#ffffff] rounded-full px-8 py-3 justify-center">
         <View className="flex-row items-center justify-center gap-[10px]">
           <GoogleIcon width={18} height={18} />

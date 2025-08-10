@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Time-Up",
-    "slug": "Time-Up",
+    "slug": "time-up",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/Icon.svg",
@@ -10,7 +10,10 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anit7215.TimeUp"
+      "bundleIdentifier": "com.anit7215.timeup",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +21,22 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anit7215.TimeUp"
+      "package": "com.timeup",
+      "googleServicesFile": "./google-services.json",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "timeup"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -37,6 +55,14 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9c20f662-9b60-4723-b1c0-84162a28c664"
+      },"googleAndroidClientId": "128891005006-3puuui45deiveh77otbqmlvqni6ih3ov.apps.googleusercontent.com",
+      "googleIosClientId": "128891005006-52nn0s4ebirsugkov1lbip9h32dm55tr.apps.googleusercontent.com",
+      "expoClientId": "340998244534-4u40uhomsb5iphtjpl64nbr345podhjb.apps.googleusercontent.com"
+    },
+    "owner": "anit7215"
   }
 }
