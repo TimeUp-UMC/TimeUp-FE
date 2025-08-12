@@ -1,14 +1,15 @@
- import axios from 'axios';
+import axios from 'axios';
+import { reset } from '../services/NavigationService';
 import { getAccessToken, getRefreshToken, removeAccessToken, removeRefreshToken, setAccessToken, setRefreshToken } from '../utils/storage';
 
 let refreshPromise: Promise<string | null> | null = null;
 
 export const axiosInstance = axios.create({
-  baseURL: process.env.SERVER_API_URL,
+  baseURL: process.env.EXPO_PUBLIC_SERVER_API_URL,
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const token = getAccessToken();
+axiosInstance.interceptors.request.use(async (config) => {
+  const token = await getAccessToken();
   if (token) {
     config.headers = config.headers ?? {};
     config.headers.Authorization = `Bearer ${token}`;
@@ -21,14 +22,11 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       if (originalRequest.url?.includes('/auth/refresh')) {
-        removeAccessToken();
-        removeRefreshToken();
-        window.location.href = '/';
+        await removeAccessToken();
+        await removeRefreshToken();
+        reset('OnboardingPage'); 
         return Promise.reject(error);
       }
 
@@ -37,21 +35,21 @@ axiosInstance.interceptors.response.use(
       if (!refreshPromise) {
         refreshPromise = (async () => {
           try {
-            const refreshToken = getRefreshToken();
+            const refreshToken = await getRefreshToken();
             if (!refreshToken) throw new Error('No refresh token');
 
             const { data } = await axiosInstance.post('/auth/refresh', {
               refresh: refreshToken,
             });
 
-            setAccessToken(data.data.accessToken);
-            setRefreshToken(data.data.refreshToken);
+            await setAccessToken(data.data.accessToken);
+            await setRefreshToken(data.data.refreshToken);
 
             return data.data.accessToken;
           } catch (e) {
-            removeAccessToken();
-            removeRefreshToken();
-            window.location.href = '/';
+            await removeAccessToken();
+            await removeRefreshToken();
+            reset('OnboardingPage');
             return null;
           } finally {
             refreshPromise = null;

@@ -1,11 +1,12 @@
 import { signout } from '@/src/apis/auth';
 import { jobOptions, transportOptions, yearOptions } from '@/src/constants/userOptions';
+import { useUpdateUserInfo } from '@/src/hooks/mutation/my/useUpdateUserInfo';
 import useAppNavigation from '@/src/hooks/useAppNavigation';
 import { useGetUserInfo } from '@/src/hooks/users/useGetUserInfo';
 import { JobType } from '@/src/types/user';
 import { formatTime } from '@/src/utils/userTimeFormat';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, Platform, Text, TouchableOpacity, View } from 'react-native';
 import SignoutIcon from '../../../assets/images/SignoutIcon.svg';
 import BeforeHeader from '../../components/common/BeforeHeader';
 import CancelButton from '../../components/common/CancleButton';
@@ -16,7 +17,11 @@ import StepTransport from '../../components/Onboarding/StepTransport';
 import TimeModal from '../../components/Onboarding/TimeModal';
 import { useProfileStore } from '../../stores/useProfileStore';
 import { AddressItem } from '../../types/address';
-import { useUpdateUserInfo } from '@/src/hooks/mutation/my/useUpdateUserInfo';
+
+let GoogleSignin: any;
+if (Platform.OS !== 'web') {
+  GoogleSignin = require('@react-native-google-signin/google-signin').GoogleSignin;
+}
 
 export default function EditInfoPage() {
   const navigation = useAppNavigation();
@@ -32,6 +37,10 @@ export default function EditInfoPage() {
   const handleSignout = async () => {
     setOpenSignout(false);
     try {
+      if (Platform.OS !== 'web') {
+        await GoogleSignin.revokeAccess();
+        await GoogleSignin.signOut();
+      }
       await signout();
       alert('회원탈퇴 되었습니다!');
       navigation.navigate('OnboardingPage'); 
@@ -84,7 +93,6 @@ export default function EditInfoPage() {
     return found ? (found.label as JobType) : undefined;
   };
 
-
   const handleSave = () => {
   const isMissing =
     !birthYear || !job || transport.length !== transportOptions.length || !readyTime ||!homeAddress || homeAddress === '-';
@@ -132,8 +140,6 @@ export default function EditInfoPage() {
       });
     }
   };
-
-
 
   return (
     <>

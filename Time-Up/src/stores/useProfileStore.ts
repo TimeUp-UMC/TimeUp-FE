@@ -1,16 +1,18 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
 export type JobType =
-  | '직장인'
-  | '공무원/군인'
+| '공무원/군인'
   | '자영업자'
   | '프리랜서'
   | '학생'
   | '무직'
+  | '직장인'
   | '기타';
 
 export type TransportType = 'bus' | 'subway' | 'car' | 'walk';
-
 interface ProfileState {
   birthYear: string | null;
   job: JobType | null;
@@ -25,23 +27,36 @@ interface ProfileState {
   profileImage:string|null;
 }
 
-export const useProfileStore = create<ProfileState>((set, get) => ({
-  birthYear: null,
-  job: null,
-  transport: [],
-  readyTime: null,
-  commuteTime: null,
-  selectedTimes: {},
-  homeAddress: null,
-  workAddress: null,
-  setField: (field, value) => set({ [field]: value }),
-  toggleTransport: (value) => {
-    const transport = get().transport;
-    set({
-      transport: transport.includes(value)
-        ? transport.filter((v) => v !== value)
-        : [...transport, value],
-    });
-  },
-  profileImage:null,
-}));
+export const useProfileStore = create<ProfileState>()(
+  devtools(
+    persist(
+      (set, get) => ({
+        birthYear: null,
+        job: null,
+        transport: [],
+        readyTime: null,
+        commuteTime: null,
+        selectedTimes: {},
+        homeAddress: null,
+        workAddress: null,
+        setField: (field, value) => set({ [field]: value }),
+        toggleTransport: (value) => {
+          const transport = get().transport;
+          set({
+            transport: transport.includes(value)
+              ? transport.filter((v) => v !== value)
+              : [...transport, value],
+          });
+        },
+        profileImage: null,
+      }),
+      {
+        name: 'profile-storage',
+        storage: createJSONStorage(() => AsyncStorage),
+      }
+    ),
+    {
+      enabled: Platform.OS !== 'web',
+    },
+  )
+);

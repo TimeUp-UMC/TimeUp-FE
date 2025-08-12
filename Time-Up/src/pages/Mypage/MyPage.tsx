@@ -1,7 +1,8 @@
-import { logout } from '@/src/apis/auth';
+  import { logout } from '@/src/apis/auth';
 import useAppNavigation from '@/src/hooks/useAppNavigation';
 import { useGetUserInfo } from '@/src/hooks/users/useGetUserInfo';
 import { useProfileStore } from '@/src/stores/useProfileStore';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import React, { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import NextIcon from '../../../assets/images/NextIcon.svg';
@@ -25,6 +26,7 @@ export default function MyPage() {
   const handleLogout = async () => {
     setOpenLogout(false);
     try {
+      await GoogleSignin.signOut();
       await logout();
       alert('로그아웃 되었습니다!');
       navigation.navigate('OnboardingPage'); 
