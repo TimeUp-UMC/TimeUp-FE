@@ -44,7 +44,6 @@ import SetScheduleRepeatPage from './src/pages/SetScheduleRepeatPage';
 import ViewScheduleDetailPage from './src/pages/ViewScheduleDetailPage';
 import { navigationRef } from './src/services/NavigationService';
 
-import { getAccessToken } from './src/utils/storage';
 
 const queryClient = new QueryClient();
 
@@ -67,17 +66,17 @@ export default function App() {
     }
   }, []);
 
-  useEffect(() => {
-    const token = getAccessToken();
-    setInitialRoute(token ? 'CalendarPage' : 'OnboardingPage'); 
-  }, []);
-  if (!mapsLoaded || !initialRoute) return null;
+  // useEffect(() => {
+  //   const token = getAccessToken();
+  //   setInitialRoute(token ? 'CalendarPage' : 'OnboardingPage'); 
+  // }, []);
+  // if (!mapsLoaded || !initialRoute) return null;
   const content = (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <BottomSheetModalProvider>
         <ScheduleProvider>
           <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator initialRouteName={initialRoute} screenOptions={{ headerShown: false }}>
+            <Stack.Navigator initialRouteName={"OnboardingPage"} screenOptions={{ headerShown: false }}>
               <Stack.Screen name="OnboardingPage" component={OnboardingPage} />
               <Stack.Screen name="CalendarPage" component={CalendarPage} />
               <Stack.Screen name="MyPage" component={MyPage} />
