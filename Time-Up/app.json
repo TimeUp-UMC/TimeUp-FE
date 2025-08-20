@@ -5,8 +5,8 @@
     "jsEngine": "jsc",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/Icon.svg",
-    "scheme": "com.googleusercontent.apps.128891005006-fud8a2tbirh7gdid5smjvgdq5k577ri4",
+    "icon": "./assets/icon.png",
+    "scheme": "timeup",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -15,16 +15,17 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anit7215.TimeUp",
+      "useNextNotificationsApi": true,
       "googleServicesFile": "./google-services.json" 
     },
     "web": {
       "bundler": "metro",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/icon.png"
     },
     "plugins": [
       [
@@ -35,7 +36,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true

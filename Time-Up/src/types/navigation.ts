@@ -1,5 +1,6 @@
 
 import { AddressItem } from './address';
+import { DiaryItem } from './diary';
 export type RootStackParamList = {
   CalendarPage: undefined;
   OnboardingPage: undefined;
@@ -15,7 +16,10 @@ export type RootStackParamList = {
   };
   EditInfoPage: undefined;
   EditAlarmPage: undefined;
-  FeedbackPage: undefined;
+  DiaryWritePage: undefined;
+  DiaryPage: undefined;
+  DiaryDetailPage: { diary?: DiaryItem }; 
+  FeedbackPage: { alarmId: number };
   AlarmMemoPage: undefined;
   AlarmPage: undefined;
   EditMyAlarmPage: undefined;
@@ -23,9 +27,16 @@ export type RootStackParamList = {
   MyAlarmDetailPage: undefined;
   MyAlarmPage: undefined;
   PushAlarmPage: undefined;
-  SelectAlarmReplayPage: undefined;
-  SelectAlarmSoundPage: undefined;
-  SelectAlarmVibratePage: undefined;
+  SelectMyAlarmReplayPage: undefined;
+  SelectMyAlarmSoundPage: undefined;
+  SelectMyAlarmVibratePage: undefined;
   WakeUpAlarmDetailPage: undefined;
   WakeUpAlarmPage: undefined;
+  SetRemindAlarmPage: undefined;
+  SetScheduleRepeatPage: undefined;
+  SetLocationPage: undefined;
+  ViewScheduleDetailPage: undefined;
+  SelectWakeupAlarmReplayPage: undefined;
+  SelectWakeupAlarmSoundPage: undefined;
+  SelectWakeupAlarmVibratePage: undefined;
 };

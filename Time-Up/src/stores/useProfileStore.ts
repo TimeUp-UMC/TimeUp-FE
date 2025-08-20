@@ -1,16 +1,13 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
 import { create } from 'zustand';
-import { createJSONStorage, devtools, persist } from 'zustand/middleware';
 
 export type JobType =
-| '공무원/군인'
-  | '자영업자'
-  | '프리랜서'
-  | '학생'
-  | '무직'
-  | '직장인'
-  | '기타';
+  | 'worker'
+  | 'public_worker'
+  | 'self_employed'
+  | 'freelancer'
+  | 'student'
+  | 'unemployed'
+  | 'other';
 
 export type TransportType = 'bus' | 'subway' | 'car' | 'walk';
 interface ProfileState {
@@ -25,38 +22,47 @@ interface ProfileState {
   setField: <K extends keyof ProfileState>(field: K, value: ProfileState[K]) => void;
   toggleTransport: (value: TransportType) => void;
   profileImage:string|null;
+  reset: () => void;
 }
 
-export const useProfileStore = create<ProfileState>()(
-  devtools(
-    persist(
-      (set, get) => ({
-        birthYear: null,
-        job: null,
-        transport: [],
-        readyTime: null,
-        commuteTime: null,
-        selectedTimes: {},
-        homeAddress: null,
-        workAddress: null,
-        setField: (field, value) => set({ [field]: value }),
-        toggleTransport: (value) => {
-          const transport = get().transport;
-          set({
-            transport: transport.includes(value)
-              ? transport.filter((v) => v !== value)
-              : [...transport, value],
-          });
-        },
-        profileImage: null,
-      }),
-      {
-        name: 'profile-storage',
-        storage: createJSONStorage(() => AsyncStorage),
-      }
-    ),
-    {
-      enabled: Platform.OS !== 'web',
-    },
-  )
-);
+const initialState: Omit<ProfileState, 'setField' | 'toggleTransport' | 'reset'> = {
+  birthYear: null,
+  job: null,
+  transport: [],
+  readyTime: null,
+  commuteTime: null,
+  selectedTimes: {
+    월요일: { period: '오전', hour: '08', minute: '00' },
+    화요일: { period: '오전', hour: '08', minute: '00' },
+    수요일: { period: '오전', hour: '08', minute: '00' },
+    목요일: { period: '오전', hour: '08', minute: '00' },
+    금요일: { period: '오전', hour: '08', minute: '00' },
+    토요일: { period: '오전', hour: '08', minute: '00' },
+    일요일: { period: '오전', hour: '08', minute: '00' },
+  },
+  homeAddress: null,
+  workAddress: null,
+  profileImage: null,
+};
+
+export const useProfileStore = create<ProfileState>((set, get) => ({
+  birthYear: null,
+  job: null,
+  transport: [],
+  readyTime: null,
+  commuteTime: null,
+  selectedTimes: {},
+  homeAddress: null,
+  workAddress: null,
+  setField: (field, value) => set({ [field]: value }),
+  toggleTransport: (value) => {
+    const transport = get().transport;
+    set({
+      transport: transport.includes(value)
+        ? transport.filter((v) => v !== value)
+        : [...transport, value],
+    });
+  },
+  profileImage:null,
+  reset: () => set(initialState),
+}));

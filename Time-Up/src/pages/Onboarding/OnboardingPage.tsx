@@ -1,4 +1,5 @@
 import { axiosInstance } from '@/src/apis/axiosInstance';
+import { useAlarmContext } from '@/src/contexts/AlarmContext';
 import useAppNavigation from '@/src/hooks/useAppNavigation';
 import { useProfileStore } from '@/src/stores/useProfileStore';
 import { setAccessToken, setRefreshToken } from '@/src/utils/storage';
@@ -12,6 +13,9 @@ import { login } from '../../apis/auth';
 export default function OnboardingPage() {
   const navigation = useAppNavigation();
   const { setField } = useProfileStore();
+  const { refreshAlarms } = useAlarmContext();
+  const syncedOnceRef = useRef(false); 
+
   const opacityAnim = useRef(new Animated.Value(0)).current;
 
   // 네이티브 전용 
@@ -72,6 +76,14 @@ export default function OnboardingPage() {
       if (data.success?.refreshToken) {
         await setRefreshToken(data.success.refreshToken);
       }
+      if (!syncedOnceRef.current) {
+            syncedOnceRef.current = true;
+            try {
+              await refreshAlarms();
+            } catch (e) {
+              console.warn('초기 알람 동기화 실패(무시 가능):', e);
+            }
+          }
       if (googleProfileImage) {
         setField('profileImage', googleProfileImage);
       }
