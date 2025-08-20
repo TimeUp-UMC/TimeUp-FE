@@ -2,11 +2,10 @@
   "expo": {
     "name": "Time-Up",
     "slug": "com-anit7215-timeup",
-    "jsEngine": "jsc",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "scheme": "timeup",
+    "icon": "./assets/images/Icon.svg",
+    "scheme": "com.googleusercontent.apps.340998244534-qbkoqq1f40lb5isg6095drudhtggdobj",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -20,8 +19,7 @@
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anit7215.TimeUp",
-      "useNextNotificationsApi": true,
-      "googleServicesFile": "./google-services.json" 
+      "useNextNotificationsApi": true
     },
     "web": {
       "bundler": "metro",
